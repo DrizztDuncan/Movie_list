@@ -1,9 +1,25 @@
 const BASE_URL = `https://webdev.alphacamp.io`;
-const INDEX_URL = BASE_URL + `/api/movies`;
+const INDEX_URL = BASE_URL + `/api/movies/`;
 const POSTER_URL = BASE_URL + `/posters/`;
 const movies = [];
 
 const dataPanel = document.querySelector("#data-panel");
+
+function showMovieModal(id) {
+  const modalTitle = document.querySelector("#movie-modal-title");
+  const modalImage = document.querySelector("#movie-modal-image");
+  const modalDate = document.querySelector("#movie-modal-date");
+  const modalDescription = document.querySelector("#movie-modal-description");
+  axios.get(INDEX_URL + id).then((response) => {
+    const data = response.data.results;
+    modalTitle.innerText = data.title;
+    modalDate.innerText = "Release date: " + data.release_date;
+    modalDescription.innerText = data.description;
+    modalImage.innerHTML = `<img src="${
+      POSTER_URL + data.image
+    }" alt="movie-poster" class="img-fluid">`;
+  });
+}
 
 // 監聽 data panel
 dataPanel.addEventListener("click", function onPanelClicked(event) {
@@ -46,18 +62,9 @@ function renderMovieList(data) {
   dataPanel.innerHTML = rawHTML;
 }
 
-function showMovieModal(id) {
-  const modalTitle = document.querySelector("#movie-modal-title");
-  const modalImage = document.querySelector("#movie-modal-image");
-  const modalDate = document.querySelector("#movie-modal-date");
-  const modalDescription = document.querySelector("#movie-modal-description");
-  axios.get(INDEX_URL + id).then((response) => {
-    const data = response.data.results;
-    modalTitle.innerText = data.title;
-    modalDate.innerText = "Release date: " + data.release_date;
-    modalDescription.innerText = data.description;
-    modalImage.innerHTML = `<img src="${
-      POSTER_URL + data.image
-    }" alt="movie-poster" class="img-fluid">`;
-  });
-}
+const searchForm = document.querySelector("#search-form");
+//...
+//監聽表單提交事件
+searchForm.addEventListener("submit", function onSearchFormSubmitted(event) {
+  console.log("click!"); //測試用
+});
