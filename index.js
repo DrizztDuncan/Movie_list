@@ -21,10 +21,22 @@ function showMovieModal(id) {
   });
 }
 
+function addToFavorite(id) {
+  const list = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
+  const movie = movies.find((movie) => movie.id === id);
+  if (list.some((movie) => movie.id === id)) {
+    return alert("此電影已經在收藏清單中！");
+  }
+  list.push(movie);
+  localStorage.setItem("favoriteMovies", JSON.stringify(list));
+}
+
 // 監聽 data panel
 dataPanel.addEventListener("click", function onPanelClicked(event) {
   if (event.target.matches(".btn-show-movie")) {
     showMovieModal(event.target.dataset.id);
+  } else if (event.target.matches(".btn-add-favorite")) {
+    addToFavorite(event.target.dataset.id);
   }
 });
 
@@ -53,7 +65,9 @@ function renderMovieList(data) {
           <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal" data-bs-target="#movie-modal" data-id="${
             item.id
           }">More</button>
-          <button class="btn btn-info btn-add-favorite">+</button>
+          <button class="btn btn-info btn-add-favorite" data-id="${
+            item.id
+          }">+</button>
         </div>
       </div>
     </div>
@@ -63,8 +77,19 @@ function renderMovieList(data) {
 }
 
 const searchForm = document.querySelector("#search-form");
+const searchInput = document.querySelector("#search-input");
 //...
 //監聽表單提交事件
 searchForm.addEventListener("submit", function onSearchFormSubmitted(event) {
-  console.log("click!"); //測試用
+  event.preventDefault();
+  const keyword = searchInput.value.trim().toLowerCase();
+
+  if (!keyword.length) {
+    return alert(`Input can't be empty!`);
+  }
+  filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(keyword)
+  );
+  //重新輸出至畫面
+  renderMovieList(filteredMovies);
 });
