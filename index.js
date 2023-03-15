@@ -24,6 +24,10 @@ function showMovieModal(id) {
 function addToFavorite(id) {
   const list = JSON.parse(localStorage.getItem("favoriteMovies")) || [];
   const movie = movies.find((movie) => movie.id === id);
+  // Check if movie is found
+  if (!movie) {
+    return alert("找不到指定的電影！");
+  }
   if (list.some((movie) => movie.id === id)) {
     return alert("此電影已經在收藏清單中！");
   }
@@ -34,9 +38,9 @@ function addToFavorite(id) {
 // 監聽 data panel
 dataPanel.addEventListener("click", function onPanelClicked(event) {
   if (event.target.matches(".btn-show-movie")) {
-    showMovieModal(event.target.dataset.id);
+    showMovieModal(Number(event.target.dataset.id));
   } else if (event.target.matches(".btn-add-favorite")) {
-    addToFavorite(event.target.dataset.id);
+    addToFavorite(Number(event.target.dataset.id));
   }
 });
 
