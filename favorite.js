@@ -19,9 +19,7 @@ function showMovieModal(id) {
   const modalImage = document.querySelector("#movie-modal-image");
   const modalDate = document.querySelector("#movie-modal-date");
   const modalDescription = document.querySelector("#movie-modal-description");
-  console.log(id);
   axios.get(INDEX_URL + id).then((response) => {
-    console.log(response.data.results.title);
     const data = response.data.results;
     modalTitle.innerText = data.title;
     modalDate.innerText = "Release date: " + data.release_date;
