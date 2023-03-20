@@ -47,6 +47,7 @@ function addToFavorite(id) {
 
 // 監聽 data panel
 dataPanel.addEventListener("click", function onPanelClicked(event) {
+  console.log(event);
   if (event.target.matches(".btn-show-movie")) {
     showMovieModal(Number(event.target.dataset.id));
   } else if (event.target.matches(".btn-add-favorite")) {
